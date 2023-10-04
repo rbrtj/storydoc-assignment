@@ -1,38 +1,40 @@
-import './WorkspacesMain.scss';
-import {Board, Home, Profile, Search} from "../../assets/icons";
+import "./WorkspacesMain.scss";
+import { Board, Home, Profile, Search } from "../../assets/icons";
 
 const navItems = [
-    {
-        icon: <Home />,
-        text: 'Dashboard',
-        active: false
-    },
-    {
-        icon: <Board />,
-        text: 'Boards',
-        active: true
-    },
-    {
-        icon: <Profile />,
-        text: 'Profile',
-        active: false
-    },
-    {
-        icon: <Search />,
-        text: 'Search',
-        active: false
-    }
-]
+  {
+    icon: <Home />,
+    text: "Dashboard",
+    active: false,
+  },
+  {
+    icon: <Board />,
+    text: "Boards",
+    active: true,
+  },
+  {
+    icon: <Profile />,
+    text: "Profile",
+    active: false,
+  },
+  {
+    icon: <Search />,
+    text: "Search",
+    active: false,
+  },
+];
 export const WorkspacesMain = () => {
-    return (
+  return (
     <div className="workspaces-main-container">
-        {navItems.map((item) => (
-            <div className={`workspaces-main-item ${item.active ? 'active' : ''}`}>
-                {item.icon}
-                {item.text}
-            </div>
-        ))}
-
+      {navItems.map((item, index) => (
+        <div
+          key={index}
+          className={`workspaces-main-item ${item.active ? "active" : ""}`}
+        >
+          {item.icon}
+          {item.text}
+        </div>
+      ))}
     </div>
-    )
-}
+  );
+};
