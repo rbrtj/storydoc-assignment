@@ -1,5 +1,9 @@
 import "./LogoEmpty.scss";
-export const LogoEmpty = ({ onClick }) => {
+
+interface LogoEmptyProps {
+  onClick: () => void;
+}
+export const LogoEmpty = ({ onClick }: LogoEmptyProps) => {
   return (
     <div
       style={{
