@@ -7,3 +7,5 @@ export * from "./Profile";
 export * from "./Search";
 export * from "./LogoEmpty";
 export * from "./Check";
+export * from "./Edit";
+export * from "./Trash";
