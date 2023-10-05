@@ -9,6 +9,10 @@
   font-weight: bold;
   background-color: #FFFFFF;
 
+  & svg {
+    fill: black;
+  }
+
   &-default {
     border-radius: 4px;
     padding: 8px 12px 8px 10px;
@@ -26,8 +30,19 @@
     & svg {
       fill: #FFFFFF;
     }
-
   }
+
+  &-ghost {
+    border-radius: 4px;
+    color: #88819F;
+    background: none;
+    border: none;
+
+    & svg {
+      fill: #88819F;
+    }
+  }
+
 }
 
 .disabled {

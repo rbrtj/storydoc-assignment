@@ -3,6 +3,7 @@ import "./Button.scss";
 const ButtonVariants = {
   default: "button-default",
   primary: "button-primary",
+  ghost: "button-ghost",
 };
 
 interface ButtonProps {
