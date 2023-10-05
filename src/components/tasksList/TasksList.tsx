@@ -3,10 +3,22 @@ import { Task } from "../task";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Edit, Plus, Trash } from "../../assets/icons";
-export const TasksList = () => {
-  const [title, setTitle] = useState("Working on");
+import { List } from "../../store/types.ts";
+import { useEditListName } from "../../hooks/useEditListName";
+
+interface TasksListProps {
+  list: List;
+  listIndex: number;
+}
+export const TasksList = ({ list, listIndex }: TasksListProps) => {
+  const [title, setTitle] = useState(list.name);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const editListName = useEditListName();
+
+  useEffect(() => {
+    setTitle(list.name);
+  }, [list.name]);
 
   const handleStartEditingTitle = () => {
     setIsEditing(true);
@@ -14,6 +26,7 @@ export const TasksList = () => {
 
   const handleEndEditingTitle = () => {
     setIsEditing(false);
+    editListName(listIndex, title);
   };
 
   const handleTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,9 +62,11 @@ export const TasksList = () => {
             <Trash />
           </div>
         </div>
-        <div className="tasks-list__tasks">
-          <Task />
-        </div>
+        {list.tasks.map((task, index) => (
+          <div className="tasks-list__tasks" key={index}>
+            <Task taskName={task.name} />
+          </div>
+        ))}
       </div>
       <Button onClick={() => console.log("clicked")} variant="ghost">
         <Plus />
