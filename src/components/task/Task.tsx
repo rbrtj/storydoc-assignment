@@ -1,4 +1,8 @@
 import "./Task.scss";
-export const Task = () => {
-  return <div className="task">Do something</div>;
+
+interface TaskProps {
+  taskName: string;
+}
+export const Task = ({ taskName }: TaskProps) => {
+  return <div className="task">{taskName}</div>;
 };
