@@ -1,5 +1,4 @@
 import "./Button.scss";
-import { Plus } from "../../../assets/icons";
 
 const ButtonVariants = {
   default: "button-default",
