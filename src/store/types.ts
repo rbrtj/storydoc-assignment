@@ -1,8 +1,13 @@
-interface Column {
+interface Task {
   name: string;
+}
+
+export interface List {
+  name: string;
+  tasks: Task[];
 }
 export interface BoardInterface {
   name: string;
   isActive: boolean;
-  columns: Column[];
+  lists: List[];
 }
