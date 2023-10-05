@@ -6,12 +6,53 @@ const initialState: BoardInterface[] = [
     name: "Acme Corp workspace",
     // TODO - add icon
     isActive: true,
-    columns: [],
+    lists: [
+      {
+        name: "Working on",
+        tasks: [
+          {
+            name: "Create a video for Acme",
+          },
+          {
+            name: "Review Acme PDF",
+          },
+        ],
+      },
+      {
+        name: "Review",
+        tasks: [
+          {
+            name: "Social media posts for Acme",
+          },
+          {
+            name: "Facebook Campaign",
+          },
+          {
+            name: "Tiktok profile setup",
+          },
+          {
+            name: "Marketing list",
+          },
+          {
+            name: "Company Video",
+          },
+        ],
+      },
+    ],
   },
   {
     name: "Test workspace",
     isActive: false,
-    columns: [],
+    lists: [
+      {
+        name: "Some list",
+        tasks: [
+          {
+            name: "Some task",
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -24,7 +65,7 @@ export const boardSlice = createSlice({
       const board: BoardInterface = {
         name: payload.name,
         isActive: true,
-        columns: [],
+        lists: [],
       };
       state.map((board) => (board.isActive = false));
       state.push(board);
@@ -37,7 +78,15 @@ export const boardSlice = createSlice({
         return board;
       });
     },
+    editListName: (state, action) => {
+      const { listIndex, newName } = action.payload;
+      const activeWorkspace = state.find((workspace) => workspace.isActive);
+      // Kinda dirty but I'd like to omit setting index prop on each workspace.
+      if (activeWorkspace) {
+        activeWorkspace.lists[listIndex].name = newName;
+      }
+    },
   },
 });
 
-export const { addBoard, setBoardActive } = boardSlice.actions;
+export const { addBoard, setBoardActive, editListName } = boardSlice.actions;
