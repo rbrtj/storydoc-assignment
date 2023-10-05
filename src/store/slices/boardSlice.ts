@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { BoardInterface } from "../types";
-// import {Logo} from '../../assets/icons';
-const initialState: BoardInterface[] | Record<string, never> = [
+
+const initialState: BoardInterface[] = [
   {
     name: "Acme Corp workspace",
     // TODO - add icon
@@ -20,13 +20,13 @@ export const boardSlice = createSlice({
   initialState,
   reducers: {
     addBoard: (state, action) => {
-      const isActive = state.length > 0 ? false : true;
       const payload = action.payload;
-      const board = {
+      const board: BoardInterface = {
         name: payload.name,
-        isActive,
+        isActive: true,
         columns: [],
       };
+      state.map((board) => (board.isActive = false));
       state.push(board);
     },
     setBoardActive: (state, action) => {
@@ -40,4 +40,4 @@ export const boardSlice = createSlice({
   },
 });
 
-export const {} = boardSlice.actions;
+export const { addBoard, setBoardActive } = boardSlice.actions;
