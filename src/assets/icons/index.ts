@@ -6,3 +6,4 @@ export * from "./Board";
 export * from "./Profile";
 export * from "./Search";
 export * from "./LogoEmpty";
+export * from "./Check";
