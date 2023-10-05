@@ -1,3 +1,4 @@
+import "./LogoEmpty.scss";
 export const LogoEmpty = ({ onClick }) => {
   return (
     <div
@@ -8,6 +9,9 @@ export const LogoEmpty = ({ onClick }) => {
         borderRadius: "8px",
       }}
       onClick={onClick}
-    ></div>
+      className="logo-empty"
+    >
+      X
+    </div>
   );
 };
