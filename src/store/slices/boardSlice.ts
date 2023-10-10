@@ -86,7 +86,17 @@ export const boardSlice = createSlice({
         activeWorkspace.lists[listIndex].name = newName;
       }
     },
+    addTask: (state, action) => {
+      const { listIndex, taskName } = action.payload;
+      const activeWorkspace = state.find((workspace) => workspace.isActive);
+      if (activeWorkspace) {
+        activeWorkspace.lists[listIndex].tasks.push({
+          name: taskName,
+        });
+      }
+    },
   },
 });
 
-export const { addBoard, setBoardActive, editListName } = boardSlice.actions;
+export const { addBoard, setBoardActive, editListName, addTask } =
+  boardSlice.actions;
