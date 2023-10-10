@@ -1,10 +1,11 @@
 import "./TasksList.scss";
-import { Task } from "../task";
+import { Task, TaskNew } from "../task";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Edit, Plus, Trash } from "../../assets/icons";
 import { List } from "../../store/types.ts";
 import { useEditListName } from "../../hooks/useEditListName";
+import { useAddNewTask } from "../../hooks/useAddNewTask";
 
 interface TasksListProps {
   list: List;
@@ -13,8 +14,11 @@ interface TasksListProps {
 export const TasksList = ({ list, listIndex }: TasksListProps) => {
   const [title, setTitle] = useState(list.name);
   const [isEditing, setIsEditing] = useState(false);
+  const [isNewTask, setIsNewTask] = useState(false);
+  const [newTaskName, setNewTaskName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const editListName = useEditListName();
+  const addNewTask = useAddNewTask();
 
   useEffect(() => {
     setTitle(list.name);
@@ -37,6 +41,17 @@ export const TasksList = ({ list, listIndex }: TasksListProps) => {
     if (e.key === "Enter") {
       handleEndEditingTitle();
     }
+  };
+
+  const handleNewTaskAdd = () => {
+    addNewTask({ listIndex, taskName: newTaskName });
+    setIsNewTask(false);
+    setNewTaskName("");
+  };
+
+  const handleCancelNewTask = () => {
+    setIsNewTask(false);
+    setNewTaskName("");
   };
 
   useEffect(() => {
@@ -67,8 +82,20 @@ export const TasksList = ({ list, listIndex }: TasksListProps) => {
             <Task taskName={task.name} />
           </div>
         ))}
+        {isNewTask && (
+          <div>
+            <TaskNew
+              onCancel={() => handleCancelNewTask()}
+              onSave={() => handleNewTaskAdd()}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setNewTaskName(e.target.value)
+              }
+              value={newTaskName}
+            />
+          </div>
+        )}
       </div>
-      <Button onClick={() => console.log("clicked")} variant="ghost">
+      <Button onClick={() => setIsNewTask(true)} variant="ghost">
         <Plus />
         Add a card
       </Button>
