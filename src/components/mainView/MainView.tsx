@@ -1,5 +1,5 @@
 import "./MainView.scss";
-import { TasksList } from "../tasksList";
+import { TasksList, TasksListAdd } from "../tasksList";
 import { useListsForActiveWorkspace } from "../../hooks/useGetListsForActiveWorkspace";
 
 export const MainView = () => {
@@ -9,6 +9,7 @@ export const MainView = () => {
       {tasksLists.map((list, index) => (
         <TasksList list={list} listIndex={index} key={index} />
       ))}
+      <TasksListAdd onListAdd={() => console.log("added new task")} />
     </div>
   );
 };
