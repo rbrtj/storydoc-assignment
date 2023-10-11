@@ -42,10 +42,8 @@ export const List = ({ list }: TasksListProps) => {
     }
   }, [isEditing]);
 
-  const tasksId = useMemo(() => list.tasks.map((t) => t.id), [list.tasks]);
-
   return (
-    <SortableContext items={tasksId}>
+    <SortableContext items={list.tasks} id={list.id}>
       <div className="tasks-list" ref={setNodeRef}>
         <div className="tasks-list__header">
           <input
@@ -65,7 +63,12 @@ export const List = ({ list }: TasksListProps) => {
         </div>
         <div className="tasks-list__content">
           {list.tasks.map((task) => (
-            <Task key={task.id} id={task.id} taskName={task.name} />
+            <Task
+              key={task.id}
+              taskId={task.id}
+              listId={list.id}
+              taskName={task.name}
+            />
           ))}
           {isNewTask && (
             <TaskNew

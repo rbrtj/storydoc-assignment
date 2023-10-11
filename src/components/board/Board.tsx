@@ -15,17 +15,20 @@ import {
 import { moveTask } from "../../store/slices";
 import { useDispatch } from "react-redux";
 import { useDragAndDrop } from "../../hooks/useDragAndDrop";
+import { SortableContext } from "@dnd-kit/sortable";
 
 export const Board = () => {
   const tasksLists = useListsForActiveWorkspace();
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
-  const { handleDragEnd } = useDragAndDrop();
+
+  const { handleDragEnd, handleDragStart, handleDragOver } = useDragAndDrop();
 
   return (
     <DndContext
       sensors={sensors}
-      // onDragStart={handleDragStart}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onDragMove={handleDragOver}
       collisionDetection={closestCenter}
     >
       <div className="board">

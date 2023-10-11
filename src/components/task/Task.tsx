@@ -3,12 +3,13 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 interface TaskProps {
   taskName: string;
-  id: string;
+  taskId: string;
+  listId: string;
 }
-export const Task = ({ taskName, id }: TaskProps) => {
+export const Task = ({ taskName, taskId, listId }: TaskProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
-      id: id,
+      id: taskId,
     });
   return (
     <div

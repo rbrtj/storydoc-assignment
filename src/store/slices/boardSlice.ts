@@ -122,24 +122,46 @@ export const boardSlice = createSlice({
       }
     },
     moveTask: (state, action) => {
-      const { sourceListIndex, sourceTaskIndex, destinationListIndex } =
+      const { sourceTaskId, destinationListId, destinationTaskIndex } =
         action.payload;
-      console.log("action payload", action.payload);
       const board = state.find((b) => b.isActive);
+      console.log(action.payload);
       if (!board) return;
-      if (
-        sourceListIndex < 0 ||
-        sourceListIndex >= board.lists.length ||
-        destinationListIndex < 0 ||
-        destinationListIndex >= board.lists.length ||
-        sourceTaskIndex < 0 ||
-        sourceTaskIndex >= board.lists[sourceListIndex].tasks.length
-      )
-        return;
-      const sourceList = board.lists[sourceListIndex];
-      const destinationList = board.lists[destinationListIndex];
-      const [movedTask] = sourceList.tasks.splice(sourceTaskIndex, 1);
-      destinationList.tasks.push(movedTask);
+      let sourceList = null;
+      let sourceTask = null;
+      let sourceTaskIndex = -1;
+
+      // Find the source list and task
+      for (const list of board.lists) {
+        const taskIndex = list.tasks.findIndex(
+          (task) => task.id === sourceTaskId,
+        );
+        if (taskIndex !== -1) {
+          sourceList = list;
+          sourceTask = list.tasks[taskIndex];
+          sourceTaskIndex = taskIndex;
+          break;
+        }
+      }
+
+      // Validate source task and list
+      if (!sourceList || !sourceTask || sourceTaskIndex === -1) return;
+
+      // Find the destination list
+      const destinationList = board.lists.find(
+        (list) => list.id === destinationListId,
+      );
+      if (!destinationList) return;
+
+      // Move the task
+      sourceList.tasks.splice(sourceTaskIndex, 1);
+
+      // If destinationTaskIndex is provided, insert at that index, otherwise push to the end of the list
+      if (typeof destinationTaskIndex === "number") {
+        destinationList.tasks.splice(destinationTaskIndex, 0, sourceTask);
+      } else {
+        destinationList.tasks.push(sourceTask);
+      }
     },
   },
 });
