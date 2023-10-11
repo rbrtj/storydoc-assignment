@@ -1,12 +1,12 @@
-import "./WorkspacesHeader.scss";
-import { Button } from "../ui/button";
-import { Check, Logo, LogoEmpty, Plus } from "../../assets/icons";
+import "./index.scss";
+import { Button } from "../../ui/button";
+import { Check, Logo, LogoEmpty, Plus } from "../../../assets/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { addBoard, setBoardActive } from "../../store/slices";
+import { addBoard, setBoardActive } from "../../../store/slices";
 import { useState } from "react";
-import { RootState } from "../../store/store.ts";
+import { RootState } from "../../../store/store.ts";
 
-export const WorkspacesHeader = () => {
+export const Header = () => {
   const [newBoardName, setNewBoardName] = useState("");
   const [showNewBoardItem, setShowNewBoardItem] = useState(false);
 

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { BoardInterface } from "../types";
+import { v4 as uuidv4 } from "uuid";
 
 const initialState: BoardInterface[] = [
   {
@@ -8,32 +9,41 @@ const initialState: BoardInterface[] = [
     isActive: true,
     lists: [
       {
+        id: "list-1",
         name: "Working on",
         tasks: [
           {
+            id: "task-1",
             name: "Create a video for Acme",
           },
           {
+            id: "task-2",
             name: "Review Acme PDF",
           },
         ],
       },
       {
         name: "Review",
+        id: "list-2",
         tasks: [
           {
+            id: "task-1",
             name: "Social media posts for Acme",
           },
           {
+            id: "task-2",
             name: "Facebook Campaign",
           },
           {
+            id: "task-3",
             name: "Tiktok profile setup",
           },
           {
+            id: "task-4",
             name: "Marketing list",
           },
           {
+            id: "task-5",
             name: "Company Video",
           },
         ],
@@ -46,8 +56,10 @@ const initialState: BoardInterface[] = [
     lists: [
       {
         name: "Some list",
+        id: "list-1",
         tasks: [
           {
+            id: "task-1",
             name: "Some task",
           },
         ],
@@ -79,11 +91,13 @@ export const boardSlice = createSlice({
       });
     },
     editListName: (state, action) => {
-      const { listIndex, newName } = action.payload;
+      const { listId, newName } = action.payload;
       const activeWorkspace = state.find((workspace) => workspace.isActive);
-      // Kinda dirty but I'd like to omit setting index prop on each workspace.
       if (activeWorkspace) {
-        activeWorkspace.lists[listIndex].name = newName;
+        const list = activeWorkspace.lists.find((list) => list.id === listId);
+        if (list) {
+          list.name = newName;
+        }
       }
     },
     addTask: (state, action) => {
@@ -92,11 +106,49 @@ export const boardSlice = createSlice({
       if (activeWorkspace) {
         activeWorkspace.lists[listIndex].tasks.push({
           name: taskName,
+          id: uuidv4(),
         });
       }
+    },
+    addList: (state, action) => {
+      const { listName } = action.payload;
+      const activeWorkspace = state.find((workspace) => workspace.isActive);
+      if (activeWorkspace) {
+        activeWorkspace.lists.push({
+          name: listName,
+          tasks: [],
+          id: uuidv4(),
+        });
+      }
+    },
+    moveTask: (state, action) => {
+      const { sourceListIndex, sourceTaskIndex, destinationListIndex } =
+        action.payload;
+      console.log("action payload", action.payload);
+      const board = state.find((b) => b.isActive);
+      if (!board) return;
+      if (
+        sourceListIndex < 0 ||
+        sourceListIndex >= board.lists.length ||
+        destinationListIndex < 0 ||
+        destinationListIndex >= board.lists.length ||
+        sourceTaskIndex < 0 ||
+        sourceTaskIndex >= board.lists[sourceListIndex].tasks.length
+      )
+        return;
+      const sourceList = board.lists[sourceListIndex];
+      const destinationList = board.lists[destinationListIndex];
+      const [movedTask] = sourceList.tasks.splice(sourceTaskIndex, 1);
+      destinationList.tasks.push(movedTask);
     },
   },
 });
 
-export const { addBoard, setBoardActive, editListName, addTask } =
-  boardSlice.actions;
+export const {
+  addBoard,
+  setBoardActive,
+  editListName,
+  addTask,
+  addList,
+  moveTask,
+} = boardSlice.actions;

@@ -69,6 +69,13 @@
   }
 
   &__new {
+    display: flex;
     padding: 16px;
+    &--content {
+      display: flex;
+      & svg {
+        fill: green;
+      }
+    }
   }
 }

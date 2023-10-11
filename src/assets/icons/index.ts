@@ -1,4 +1,4 @@
-export * from "./Settings";
+export * from "./SettingsIcon.tsx";
 export * from "./Plus";
 export * from "./Logo";
 export * from "./Home";

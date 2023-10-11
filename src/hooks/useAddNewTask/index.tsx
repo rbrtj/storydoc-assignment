@@ -1,17 +1,44 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../store/slices";
 
-export const useAddNewTask = () => {
+export const useAddNewTask = (listId: string) => {
   const dispatch = useDispatch();
+  const [isNewTask, setIsNewTask] = useState(false);
+  const [newTaskName, setNewTaskName] = useState("");
+
   const addNewTask = ({
-    listIndex,
+    listId,
     taskName,
   }: {
-    listIndex: number;
+    listId: string;
     taskName: string;
   }) => {
-    dispatch(addTask({ listIndex, taskName }));
+    dispatch(addTask({ listId, taskName }));
   };
 
-  return addNewTask;
+  const startNewTask = () => setIsNewTask(true);
+
+  const cancelNewTask = () => {
+    setIsNewTask(false);
+    setNewTaskName("");
+  };
+
+  const saveNewTask = () => {
+    addNewTask({ listId, taskName: newTaskName });
+    setIsNewTask(false);
+    setNewTaskName("");
+  };
+
+  const handleNewTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewTaskName(e.target.value);
+
+  return {
+    isNewTask,
+    newTaskName,
+    startNewTask,
+    cancelNewTask,
+    saveNewTask,
+    handleNewTaskNameChange,
+  };
 };

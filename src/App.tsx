@@ -1,12 +1,12 @@
 import "./App.scss";
 import { WorkspacesSidebar } from "./components/workspacesSidebar";
-import { MainView } from "./components/mainView/MainView.tsx";
+import { Board } from "./components/board/Board.tsx";
 
 export const App = () => {
   return (
     <div className="container">
       <WorkspacesSidebar />
-      <MainView />
+      <Board />
     </div>
   );
 };

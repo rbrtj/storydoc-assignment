@@ -1,5 +1,5 @@
-import "./WorkspacesMain.scss";
-import { Board, Home, Profile, Search } from "../../assets/icons";
+import "./Main.scss";
+import { Board, Home, Profile, Search } from "../../../assets/icons";
 
 const navItems = [
   {
@@ -23,14 +23,11 @@ const navItems = [
     active: false,
   },
 ];
-export const WorkspacesMain = () => {
+export const Main = () => {
   return (
-    <div className="workspaces-main-container">
+    <div className="main-container">
       {navItems.map((item, index) => (
-        <div
-          key={index}
-          className={`workspaces-main-item ${item.active ? "active" : ""}`}
-        >
+        <div key={index} className={`main-item ${item.active ? "active" : ""}`}>
           {item.icon}
           {item.text}
         </div>
