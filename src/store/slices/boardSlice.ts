@@ -27,23 +27,23 @@ const initialState: BoardInterface[] = [
         id: "list-2",
         tasks: [
           {
-            id: "task-1",
+            id: "task-3",
             name: "Social media posts for Acme",
           },
           {
-            id: "task-2",
+            id: "task-4",
             name: "Facebook Campaign",
           },
           {
-            id: "task-3",
+            id: "task-5",
             name: "Tiktok profile setup",
           },
           {
-            id: "task-4",
+            id: "task-6",
             name: "Marketing list",
           },
           {
-            id: "task-5",
+            id: "task-7",
             name: "Company Video",
           },
         ],

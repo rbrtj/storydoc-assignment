@@ -1,0 +1,48 @@
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  background-color: #ecf1fd;
+  height: fit-content;
+  border-radius: 16px;
+  padding: 16px;
+
+  &__header {
+  display: flex;
+    & input {
+      background: none;
+            border: none;
+            color: #001c39;
+            font-family: Inter;
+            font-size: 13px;
+            font-style: normal;
+            font-weight: 600;
+
+            &:focus {
+              outline: none;
+            }
+    }
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 16px 0 0 0;
+  }
+
+  &__footer {
+    display: flex;
+    padding-top: 1rem;
+  }
+
+  &__new {
+        display: flex;
+        padding: 16px;
+        &--content {
+          display: flex;
+          & svg {
+            fill: green;
+          }
+        }
+      }
+}

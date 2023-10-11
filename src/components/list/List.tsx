@@ -1,8 +1,8 @@
-import "./TasksList.scss";
+import "./List.scss";
 import { Task, TaskNew } from "../task";
 import { useEffect, useMemo, useRef } from "react";
 import { Button } from "../ui/button";
-import { Edit, Plus, Trash } from "../../assets/icons";
+import { Check, Edit, Plus, Trash } from "../../assets/icons";
 import { TList } from "../../store/types.ts";
 import { useEditListName } from "../../hooks/useEditListName";
 import { useListTitleEdit } from "../../hooks/useListTitleEdit";
@@ -10,13 +10,16 @@ import { useAddNewTask } from "../../hooks/useAddNewTask";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useDispatch } from "react-redux";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import {
+  rectSortingStrategy,
+  SortableContext,
+  useSortable,
+} from "@dnd-kit/sortable";
 
 interface TasksListProps {
   list: TList;
 }
 export const List = ({ list }: TasksListProps) => {
-  const dispatch = useDispatch();
   const editListName = useEditListName();
   const { title, isEditing, startEditing, stopEditing, handleChange } =
     useListTitleEdit(list.name, list.id, editListName);
@@ -39,9 +42,11 @@ export const List = ({ list }: TasksListProps) => {
     }
   }, [isEditing]);
 
+  const tasksId = useMemo(() => list.tasks.map((t) => t.id), [list.tasks]);
+
   return (
-    <div className="tasks-list" ref={setNodeRef}>
-      <div className="tasks-list__content">
+    <SortableContext items={tasksId}>
+      <div className="tasks-list" ref={setNodeRef}>
         <div className="tasks-list__header">
           <input
             value={title}
@@ -51,56 +56,33 @@ export const List = ({ list }: TasksListProps) => {
             onChange={handleChange}
             onKeyDown={(e) => e.key === "Enter" && stopEditing()}
           />
-          <div className="tasks-list__header--actions">
-            <Edit onClick={startEditing} />
+          <Button onClick={startEditing} variant="ghost">
+            <Edit />
+          </Button>
+          <Button onClick={() => console.log("delete list")} variant="ghost">
             <Trash />
-          </div>
+          </Button>
         </div>
-        <SortableContext items={list.tasks} id={list.id}>
+        <div className="tasks-list__content">
           {list.tasks.map((task) => (
-            <SortableTask key={task.id} id={task.id} taskName={task.name} />
+            <Task key={task.id} id={task.id} taskName={task.name} />
           ))}
-        </SortableContext>
-        {isNewTask && (
-          <div>
+          {isNewTask && (
             <TaskNew
               onCancel={cancelNewTask}
               onSave={saveNewTask}
               onChange={handleNewTaskNameChange}
               value={newTaskName}
             />
-          </div>
-        )}
+          )}
+        </div>
+        <div className="tasks-list__footer">
+          <Button onClick={startNewTask} variant="ghost">
+            <Plus />
+            Add a card
+          </Button>
+        </div>
       </div>
-      <Button onClick={startNewTask} variant="ghost">
-        <Plus />
-        Add a card
-      </Button>
-    </div>
-  );
-};
-
-const SortableTask = ({ id, taskName }) => {
-  console.log("sortable task id", id);
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: id,
-  });
-
-  useEffect(() => {
-    console.log("SortableTask Rerendered!", id, taskName);
-  }, [id, taskName]);
-
-  return (
-    <div
-      className="tasks-list__tasks"
-      ref={setNodeRef}
-      style={{
-        transform: CSS.Translate.toString(transform),
-      }}
-      {...attributes}
-      {...listeners}
-    >
-      <Task taskName={taskName} />
-    </div>
+    </SortableContext>
   );
 };

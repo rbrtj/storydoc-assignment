@@ -1,4 +1,4 @@
-import "./TasksList.scss";
+import "./List.scss";
 import { Button } from "../ui/button";
 import { Check, Plus } from "../../assets/icons";
 import { useState } from "react";
