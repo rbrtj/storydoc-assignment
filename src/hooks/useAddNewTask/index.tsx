@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTask } from "../../store/slices";
-
+import { addTask } from "../../components/task/store/task.slice.ts";
+import { v4 as uuidv4 } from "uuid";
 export const useAddNewTask = (listId: string) => {
   const dispatch = useDispatch();
   const [isNewTask, setIsNewTask] = useState(false);
@@ -14,7 +14,12 @@ export const useAddNewTask = (listId: string) => {
     listId: string;
     taskName: string;
   }) => {
-    dispatch(addTask({ listId, taskName }));
+    const newTask = {
+      id: uuidv4(),
+      listId,
+      title: taskName,
+    };
+    dispatch(addTask({ task: newTask }));
   };
 
   const startNewTask = () => setIsNewTask(true);

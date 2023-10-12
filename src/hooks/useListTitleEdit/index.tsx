@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setListName } from "../../components/list/store/list.slice.ts";
 
-export const useListTitleEdit = (
-  initialTitle: string,
-  listId: string,
-  editListName: (listId: string, listName: string) => void,
-) => {
+export const useListTitleEdit = (initialTitle: string, listId: string) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState(initialTitle);
   const [isEditing, setIsEditing] = useState(false);
+
+  const editListName = (listId: string, newName: string) => {
+    dispatch(setListName({ id: listId, title: newName }));
+  };
 
   useEffect(() => {
     setTitle(initialTitle);
@@ -22,5 +25,11 @@ export const useListTitleEdit = (
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
 
-  return { title, isEditing, startEditing, stopEditing, handleChange };
+  return {
+    title,
+    isEditing,
+    startEditing,
+    stopEditing,
+    handleChange,
+  };
 };

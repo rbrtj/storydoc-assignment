@@ -1,28 +1,24 @@
 import "./List.scss";
 import { Task, TaskNew } from "../task";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
-import { Check, Edit, Plus, Trash } from "../../assets/icons";
-import { TList } from "../../store/types.ts";
-import { useEditListName } from "../../hooks/useEditListName";
+import { Edit, Plus, Trash } from "../../assets/icons";
 import { useListTitleEdit } from "../../hooks/useListTitleEdit";
 import { useAddNewTask } from "../../hooks/useAddNewTask";
-import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
-import { useDispatch } from "react-redux";
-import {
-  rectSortingStrategy,
-  SortableContext,
-  useSortable,
-} from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
+import { ListType } from "./types/list.types.ts";
+import { useGetTasksForList } from "../../hooks/useGetTasksForList";
+import { useListRemove } from "../../hooks/useListRemove";
 
 interface TasksListProps {
-  list: TList;
+  list: ListType;
 }
 export const List = ({ list }: TasksListProps) => {
-  const editListName = useEditListName();
+  const tasks = useGetTasksForList(list.id);
   const { title, isEditing, startEditing, stopEditing, handleChange } =
-    useListTitleEdit(list.name, list.id, editListName);
+    useListTitleEdit(list.title, list.id);
+  const removeList = useListRemove({ listId: list.id });
   const {
     isNewTask,
     newTaskName,
@@ -43,7 +39,7 @@ export const List = ({ list }: TasksListProps) => {
   }, [isEditing]);
 
   return (
-    <SortableContext items={list.tasks} id={list.id}>
+    <SortableContext items={tasks} id={list.id}>
       <div className="tasks-list" ref={setNodeRef}>
         <div className="tasks-list__header">
           <input
@@ -57,17 +53,17 @@ export const List = ({ list }: TasksListProps) => {
           <Button onClick={startEditing} variant="ghost">
             <Edit />
           </Button>
-          <Button onClick={() => console.log("delete list")} variant="ghost">
+          <Button onClick={removeList} variant="ghost">
             <Trash />
           </Button>
         </div>
         <div className="tasks-list__content">
-          {list.tasks.map((task) => (
+          {tasks.map((task) => (
             <Task
               key={task.id}
               taskId={task.id}
               listId={list.id}
-              taskName={task.name}
+              taskName={task.title}
             />
           ))}
           {isNewTask && (

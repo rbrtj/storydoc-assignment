@@ -2,19 +2,24 @@ import "./index.scss";
 import { Button } from "../../ui/button";
 import { Check, Logo, LogoEmpty, Plus } from "../../../assets/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { addBoard, setBoardActive } from "../../../store/slices";
 import { useState } from "react";
 import { RootState } from "../../../store/store.ts";
+import { addWorkspace, setActiveWorkspace } from "../store/workspaces.slice.ts";
+import { WorkspaceType } from "../types/workspaces.types.ts";
+import { v4 as uuidv4 } from "uuid";
 
 export const Header = () => {
   const [newBoardName, setNewBoardName] = useState("");
   const [showNewBoardItem, setShowNewBoardItem] = useState(false);
 
   const dispatch = useDispatch();
-  const boards = useSelector((state: RootState) => state.board);
+  const workspaces = useSelector(
+    (state: RootState) => state.workspaces.allWorkspaces,
+  );
+  console.log("workspaces: ", workspaces);
   const handleCreateNewBoard = () => {
     setShowNewBoardItem(true);
-    dispatch(setBoardActive({ index: null }));
+    // dispatch(setBoardActive({ index: null }));
   };
 
   const handleCancelNewBoard = () => {
@@ -22,34 +27,39 @@ export const Header = () => {
   };
 
   const handleAddNewBoard = () => {
+    const newWorkspace: WorkspaceType = {
+      id: uuidv4(),
+      title: newBoardName,
+      isActive: false,
+    };
     dispatch(
-      addBoard({
-        name: newBoardName,
+      addWorkspace({
+        workspace: newWorkspace,
       }),
     );
     setShowNewBoardItem(false);
   };
 
-  const handleSetActiveBoard = (index: number) => {
+  const handleSetActiveBoard = (id: string) => {
     if (!showNewBoardItem) {
-      dispatch(setBoardActive({ index }));
+      dispatch(setActiveWorkspace({ id }));
     }
   };
 
   return (
     <div className="workspaces-header">
-      {boards.map((board, index: number) => (
+      {workspaces.map((workspace) => (
         <div
-          key={index}
+          key={workspace.id}
           className={`workspaces-header__item ${
-            board.isActive ? "workspaces-header__item--active" : ""
+            workspace.isActive ? "workspaces-header__item--active" : ""
           }
           ${!showNewBoardItem ? "cursor-pointer" : ""}
           `}
-          onClick={() => handleSetActiveBoard(index)}
+          onClick={() => handleSetActiveBoard(workspace.id)}
         >
           <Logo />
-          {board.name}
+          {workspace.title}
         </div>
       ))}
       {showNewBoardItem && (

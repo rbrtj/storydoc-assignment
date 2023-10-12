@@ -6,7 +6,7 @@ interface TaskProps {
   taskId: string;
   listId: string;
 }
-export const Task = ({ taskName, taskId, listId }: TaskProps) => {
+export const Task = ({ taskName, taskId }: TaskProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: taskId,

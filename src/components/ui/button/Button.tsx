@@ -6,8 +6,7 @@ const ButtonVariants = {
   ghost: "button-ghost",
 };
 
-interface ButtonProps {
-  onClick: () => void;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant: keyof typeof ButtonVariants;
   disabled?: boolean;
