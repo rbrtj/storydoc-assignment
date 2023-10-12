@@ -10,14 +10,14 @@ import {
 const initialState: ListState = {
   allLists: [
     {
-      id: "1",
+      id: "12",
       title: "Working on",
-      workspaceId: "1",
+      workspaceId: "321",
     },
     {
-      id: "2",
+      id: "13",
       title: "Review",
-      workspaceId: "1",
+      workspaceId: "321",
     },
   ],
 };

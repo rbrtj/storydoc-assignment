@@ -1,61 +1,59 @@
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   DragEndEvent,
-//   DragOverEvent,
-//   DragStartEvent,
-//   UniqueIdentifier,
-// } from "@dnd-kit/core";
-// import { useState } from "react";
-// import { extractSourceIdentifiers } from "../../utils/util.ts";
-// import { RootState } from "../../store/store.ts";
-// import { moveTask } from "../../store";
-//
-// export const useDragAndDrop = () => {
-//   const dispatch = useDispatch();
-//   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
-//   const board = useSelector((state: RootState) =>
-//     state.board.find((board) => board.isActive),
-//   );
-//   const handleDragStart = (event: DragStartEvent) => {
-//     const { active } = event;
-//     const { id } = active;
-//     setActiveId(id);
-//   };
-//   const handleDragEnd = (event: DragEndEvent) => {
-//     const { active, over } = event;
-//     if (active.id && over && over.id) {
-//       console.log("active: ", active);
-//       console.log("active Id: ", active.id);
-//     }
-//   };
-//
-//   const handleDragOver = (event: DragOverEvent) => {
-//     // const lists = board!.lists;
-//     // const { active, over } = event;
-//     // const { id } = active;
-//     // console.log("Over: ", over);
-//     // const activeList = lists.find((list) =>
-//     //   list.tasks.some((task) => task.id === id),
-//     // );
-//     // const overList = lists.find((list) =>
-//     //   list.tasks.some((task) => task.id === over!.id),
-//     // );
-//     //
-//     // if (!activeList || !overList || activeList === overList) return;
-//     //
-//     // // Find the index of the task in the overList
-//     // const destinationTaskIndex = overList.tasks.findIndex(
-//     //   (task) => task.id === over!.id,
-//     // );
-//     //
-//     // dispatch(
-//     //   moveTask({
-//     //     sourceTaskId: active.id,
-//     //     destinationListId: overList.id,
-//     //     destinationTaskIndex: destinationTaskIndex,
-//     //   }),
-//     // );
-//   };
-//
-//   // return { handleDragEnd, handleDragStart, handleDragOver };
-// };
+import { useDispatch } from "react-redux";
+import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+import {
+  resetActiveTaskId,
+  setActiveTaskId,
+  setTaskListId,
+  setTasks,
+} from "../../components/task/store/task.slice.ts";
+import { useGetListsForActiveWorkspace } from "../useGetListsForActiveWorkspace";
+import { useGetAllTasks } from "../useGetAllTasks";
+import { arrayMove } from "@dnd-kit/sortable";
+
+export const useDragAndDrop = () => {
+  const dispatch = useDispatch();
+  const lists = useGetListsForActiveWorkspace();
+  const tasks = useGetAllTasks();
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    const { id } = active;
+    dispatch(setActiveTaskId({ id }));
+  };
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over) {
+      const overTask = tasks.find((task) => task.id === over.id);
+      if (overTask && active.id !== over.id) {
+        const oldTask = tasks.find((task) => task.id === active.id);
+        const newTask = tasks.find((task) => task.id === over.id);
+        if (oldTask && newTask) {
+          const oldTaskIndex = tasks.indexOf(oldTask);
+          const newTaskIndex = tasks.indexOf(newTask);
+          const tasksCopy = [...tasks];
+          dispatch(
+            setTasks({
+              allTasks: arrayMove(tasksCopy, oldTaskIndex, newTaskIndex),
+            }),
+          );
+        }
+      }
+    }
+    dispatch(resetActiveTaskId());
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (over) {
+      const overList = lists.find((list) => list.id === over.id);
+      const overTask = tasks.find((task) => task.id === over.id);
+
+      if (overList) {
+        dispatch(setTaskListId({ id: active.id, listId: over.id }));
+      } else if (overTask) {
+        dispatch(setTaskListId({ id: active.id, listId: overTask.listId }));
+      }
+    }
+  };
+
+  return { handleDragEnd, handleDragStart, handleDragOver };
+};

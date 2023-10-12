@@ -9,12 +9,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: WorkspacesState = {
   allWorkspaces: [
     {
-      id: "1",
+      id: "321",
       title: "Acme Corp Workspace",
       isActive: true,
     },
     {
-      id: "2",
+      id: "3211",
       title: "Test Workspace",
       isActive: false,
     },

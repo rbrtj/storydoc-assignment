@@ -16,7 +16,7 @@ export const Header = () => {
   const workspaces = useSelector(
     (state: RootState) => state.workspaces.allWorkspaces,
   );
-  console.log("workspaces: ", workspaces);
+
   const handleCreateNewBoard = () => {
     setShowNewBoardItem(true);
     // dispatch(setBoardActive({ index: null }));
