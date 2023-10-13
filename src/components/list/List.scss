@@ -6,7 +6,7 @@
   padding: 16px;
   margin: 0 16px;
   min-width: 300px;
-  height: fit-content;
+  height: 100%;
   &__header {
   display: flex;
     & input {
@@ -39,6 +39,7 @@
   &__new {
         display: flex;
         padding: 16px;
+    min-width: 300px;
         &--content {
           display: flex;
           & svg {
