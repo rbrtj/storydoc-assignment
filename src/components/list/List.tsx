@@ -3,16 +3,16 @@ import { Task, TaskNew } from "../task";
 import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import { Edit, Plus, Trash } from "../../assets/icons";
-import { useListTitleEdit } from "../../hooks/useListTitleEdit";
-import { useAddNewTask } from "../../hooks/useAddNewTask";
+import { useListTitleEdit } from "./hooks/useListTitleEdit/index.tsx";
+import { useAddNewTask } from "./hooks/useAddNewTask/index.tsx";
 import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ListType } from "./types/list.types.ts";
-import { useGetTasksForList } from "../../hooks/useGetTasksForList";
-import { useListRemove } from "../../hooks/useListRemove";
+import { useGetTasksForList } from "./hooks/useGetTasksForList/index.ts";
+import { useListRemove } from "./hooks/useListRemove/index.ts";
 
 interface TasksListProps {
   list: ListType;

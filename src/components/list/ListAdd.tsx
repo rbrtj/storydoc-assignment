@@ -2,7 +2,7 @@ import "./List.scss";
 import { Button } from "../ui/button";
 import { Check, Plus } from "../../assets/icons";
 import { useState } from "react";
-import { useAddNewList } from "../../hooks/useAddNewList";
+import { useAddNewList } from "./hooks/useAddNewList";
 
 export const ListAdd = () => {
   const [isNewList, setIsNewList] = useState(false);

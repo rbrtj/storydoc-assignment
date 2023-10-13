@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setListName } from "../../components/list/store/list.slice.ts";
+import { setListName } from "../../store/list.slice.ts";
 
 export const useListTitleEdit = (initialTitle: string, listId: string) => {
   const dispatch = useDispatch();

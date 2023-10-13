@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import {
   resetActiveTaskId,
@@ -7,13 +7,13 @@ import {
   setTasks,
 } from "../../components/task/store/task.slice.ts";
 import { useGetListsForActiveWorkspace } from "../useGetListsForActiveWorkspace";
-import { useGetAllTasks } from "../useGetAllTasks";
 import { arrayMove } from "@dnd-kit/sortable";
+import { RootState } from "../../store/index.ts";
 
 export const useDragAndDrop = () => {
   const dispatch = useDispatch();
   const lists = useGetListsForActiveWorkspace();
-  const tasks = useGetAllTasks();
+  const tasks = useSelector((state: RootState) => state.tasks.allTasks);
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     const { id } = active;

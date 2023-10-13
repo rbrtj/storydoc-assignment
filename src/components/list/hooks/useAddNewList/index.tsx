@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addList } from "../../components/list/store/list.slice.ts";
+import { addList } from "../../store/list.slice.ts";
 import { v4 as uuidv4 } from "uuid";
-import { ListType } from "../../components/list/types/list.types.ts";
-import { RootState } from "../../store";
+import { ListType } from "../../types/list.types.ts";
+import { RootState } from "../../../../store/index.ts";
 
 export const useAddNewList = () => {
   const dispatch = useDispatch();
