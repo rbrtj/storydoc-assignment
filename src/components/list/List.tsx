@@ -52,12 +52,14 @@ export const List = ({ list }: TasksListProps) => {
           onChange={handleChange}
           onKeyDown={(e) => e.key === "Enter" && stopEditing()}
         />
-        <Button onClick={startEditing} variant="ghost">
-          <Edit />
-        </Button>
-        <Button onClick={removeList} variant="ghost">
-          <Trash />
-        </Button>
+        <div className="tasks-list__header--actions">
+          <Button onClick={startEditing} variant="ghost">
+            <Edit />
+          </Button>
+          <Button onClick={removeList} variant="ghost">
+            <Trash />
+          </Button>
+        </div>
       </div>
       <div className="tasks-list__content">
         <SortableContext
