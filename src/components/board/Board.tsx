@@ -2,7 +2,7 @@ import "./Board.scss";
 import { List, ListAdd } from "../list";
 import { useGetListsForActiveWorkspace } from "../../hooks/useGetListsForActiveWorkspace";
 import {
-  closestCenter,
+  closestCorners,
   DndContext,
   MouseSensor,
   TouchSensor,
@@ -10,7 +10,6 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { useDragAndDrop } from "../../hooks/useDragAndDrop";
-// import { useDragAndDrop } from "../../hooks/useDragAndDrop";
 
 export const Board = () => {
   const tasksLists = useGetListsForActiveWorkspace();
@@ -22,9 +21,9 @@ export const Board = () => {
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
-      onDragMove={handleDragOver}
-      collisionDetection={closestCenter}
+      collisionDetection={closestCorners}
     >
       <div className="board">
         {tasksLists.map((list) => (

@@ -17,7 +17,7 @@ const initialState: TasksState = {
     {
       id: "2",
       listId: "12",
-      title: "Reviee Acme PDF",
+      title: "Review Acme PDF",
     },
     {
       id: "3",

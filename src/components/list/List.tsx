@@ -6,7 +6,10 @@ import { Edit, Plus, Trash } from "../../assets/icons";
 import { useListTitleEdit } from "../../hooks/useListTitleEdit";
 import { useAddNewTask } from "../../hooks/useAddNewTask";
 import { useDroppable } from "@dnd-kit/core";
-import { SortableContext } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { ListType } from "./types/list.types.ts";
 import { useGetTasksForList } from "../../hooks/useGetTasksForList";
 import { useListRemove } from "../../hooks/useListRemove";
@@ -39,25 +42,28 @@ export const List = ({ list }: TasksListProps) => {
   }, [isEditing]);
 
   return (
-    <SortableContext items={tasks} id={list.id}>
-      <div className="tasks-list" ref={setNodeRef}>
-        <div className="tasks-list__header">
-          <input
-            value={title}
-            disabled={!isEditing}
-            ref={inputRef}
-            onBlur={stopEditing}
-            onChange={handleChange}
-            onKeyDown={(e) => e.key === "Enter" && stopEditing()}
-          />
-          <Button onClick={startEditing} variant="ghost">
-            <Edit />
-          </Button>
-          <Button onClick={removeList} variant="ghost">
-            <Trash />
-          </Button>
-        </div>
-        <div className="tasks-list__content">
+    <div className="tasks-list" ref={setNodeRef}>
+      <div className="tasks-list__header">
+        <input
+          value={title}
+          disabled={!isEditing}
+          ref={inputRef}
+          onBlur={stopEditing}
+          onChange={handleChange}
+          onKeyDown={(e) => e.key === "Enter" && stopEditing()}
+        />
+        <Button onClick={startEditing} variant="ghost">
+          <Edit />
+        </Button>
+        <Button onClick={removeList} variant="ghost">
+          <Trash />
+        </Button>
+      </div>
+      <div className="tasks-list__content">
+        <SortableContext
+          items={tasks.map((t) => t.id)}
+          strategy={verticalListSortingStrategy}
+        >
           {tasks.map((task) => (
             <Task
               key={task.id}
@@ -66,22 +72,22 @@ export const List = ({ list }: TasksListProps) => {
               taskName={task.title}
             />
           ))}
-          {isNewTask && (
-            <TaskNew
-              onCancel={cancelNewTask}
-              onSave={saveNewTask}
-              onChange={handleNewTaskNameChange}
-              value={newTaskName}
-            />
-          )}
-        </div>
-        <div className="tasks-list__footer">
-          <Button onClick={startNewTask} variant="ghost">
-            <Plus />
-            Add a card
-          </Button>
-        </div>
+        </SortableContext>
+        {isNewTask && (
+          <TaskNew
+            onCancel={cancelNewTask}
+            onSave={saveNewTask}
+            onChange={handleNewTaskNameChange}
+            value={newTaskName}
+          />
+        )}
       </div>
-    </SortableContext>
+      <div className="tasks-list__footer">
+        <Button onClick={startNewTask} variant="ghost">
+          <Plus />
+          Add a card
+        </Button>
+      </div>
+    </div>
   );
 };

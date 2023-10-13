@@ -16,7 +16,7 @@ export const Task = ({ taskName, taskId }: TaskProps) => {
       ref={setNodeRef}
       className="task"
       style={{
-        transform: CSS.Translate.toString(transform),
+        transform: CSS.Transform.toString(transform),
         transition,
       }}
       {...attributes}

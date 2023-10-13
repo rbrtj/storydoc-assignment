@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: column;
   background-color: #ecf1fd;
-  height: fit-content;
   border-radius: 16px;
   padding: 16px;
-
+  margin: 0 16px;
+  min-width: 300px;
+  height: fit-content;
   &__header {
   display: flex;
     & input {
