@@ -9,6 +9,16 @@
   height: 100%;
   &__header {
   display: flex;
+    height: 16px;
+    align-items: center;
+    &:hover {
+      & button {
+        display: flex;
+      }
+    }
+    & button {
+      display: none;
+    }
     & input {
       background: none;
             border: none;

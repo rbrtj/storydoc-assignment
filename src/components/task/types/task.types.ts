@@ -26,3 +26,12 @@ export interface SetTaskListIdPayload {
 export interface SetTasksPayload {
   allTasks: TaskType[];
 }
+
+export interface SetTaskTitlePayload {
+  id: UniqueIdentifier;
+  title: string;
+}
+
+export interface RemoveTaskPayload {
+  id: UniqueIdentifier;
+}

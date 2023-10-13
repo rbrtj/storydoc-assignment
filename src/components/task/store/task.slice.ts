@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AddTaskPayload,
+  RemoveTaskPayload,
   SetActiveTaskIdPayload,
   SetTaskListIdPayload,
   SetTasksPayload,
+  SetTaskTitlePayload,
   TasksState,
 } from "../types/task.types.ts";
 
@@ -87,6 +89,28 @@ const tasksSlice = createSlice({
         allTasks: action.payload.allTasks,
       };
     },
+    changeTaskTitle: (
+      state: TasksState,
+      action: PayloadAction<SetTaskTitlePayload>,
+    ) => {
+      const { id: taskId, title: newTitle } = action.payload;
+      return {
+        ...state,
+        allTasks: state.allTasks.map((task) =>
+          task.id === taskId ? { ...task, title: newTitle } : task,
+        ),
+      };
+    },
+    removeTask: (
+      state: TasksState,
+      action: PayloadAction<RemoveTaskPayload>,
+    ) => {
+      const { id: taskId } = action.payload;
+      return {
+        ...state,
+        allTasks: state.allTasks.filter((task) => task.id !== taskId),
+      };
+    },
   },
 });
 
@@ -96,5 +120,7 @@ export const {
   setTaskListId,
   resetActiveTaskId,
   setTasks,
+  changeTaskTitle,
+  removeTask,
 } = tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;

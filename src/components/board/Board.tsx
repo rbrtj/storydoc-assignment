@@ -13,7 +13,14 @@ import { useDragAndDrop } from "../../hooks/useDragAndDrop";
 
 export const Board = () => {
   const tasksLists = useGetListsForActiveWorkspace();
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor),
+  );
 
   const { handleDragEnd, handleDragStart, handleDragOver } = useDragAndDrop();
 

@@ -1,8 +1,9 @@
 .task {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0 16px 16px;
+  padding: 16px;
   width: 100%;
   border-radius: 8px;
   background-color: #FFFFFF;
@@ -12,16 +13,38 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
-  &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 16px;
-    & svg {
-      fill: green;
+  cursor: pointer;
+  min-height: 50px;
+
+  &:hover {
+    background-color: #F8FAFF;
+
+    .task__actions {
+      visibility: visible;
+      opacity: 1;
     }
   }
 
+  &__actions {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+
+    svg {
+      fill: red;
+    }
+  }
+
+  span, input {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 100px);
+  }
 }
 
 input {
@@ -32,6 +55,7 @@ input {
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
+  width: 100%;
 
   &:focus {
     outline: none;
