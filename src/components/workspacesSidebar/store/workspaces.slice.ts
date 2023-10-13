@@ -1,5 +1,7 @@
 import {
   AddWorkspacePayload,
+  ChangeWorkspaceTitlePayload,
+  RemoveWorkspacePayload,
   SetActiveWorkspacePayload,
   WorkspacesState,
   WorkspaceType,
@@ -54,9 +56,44 @@ const workspacesSlice = createSlice({
         }),
       };
     },
+    changeWorkspaceTitle: (
+      state: WorkspacesState,
+      action: PayloadAction<ChangeWorkspaceTitlePayload>,
+    ) => {
+      return {
+        ...state,
+        allWorkspaces: state.allWorkspaces.map((workspace: WorkspaceType) => {
+          if (workspace.id === action.payload.id) {
+            return {
+              ...workspace,
+              title: action.payload.title,
+            };
+          }
+          return workspace;
+        }),
+      };
+    },
+    removeWorkspace: (
+      state: WorkspacesState,
+      action: PayloadAction<RemoveWorkspacePayload>,
+    ) => {
+      return {
+        ...state,
+        allWorkspaces: state.allWorkspaces.filter(
+          (workspace: WorkspaceType) => {
+            return workspace.id !== action.payload.id;
+          },
+        ),
+      };
+    },
   },
 });
 
-export const { addWorkspace, setActiveWorkspace } = workspacesSlice.actions;
+export const {
+  addWorkspace,
+  changeWorkspaceTitle,
+  setActiveWorkspace,
+  removeWorkspace,
+} = workspacesSlice.actions;
 
 export const workspacesReducer = workspacesSlice.reducer;

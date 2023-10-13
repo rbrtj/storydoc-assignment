@@ -15,3 +15,12 @@ export interface AddWorkspacePayload {
 export interface SetActiveWorkspacePayload {
   id: string;
 }
+
+export interface ChangeWorkspaceTitlePayload {
+  id: string;
+  title: string;
+}
+
+export interface RemoveWorkspacePayload {
+  id: string;
+}

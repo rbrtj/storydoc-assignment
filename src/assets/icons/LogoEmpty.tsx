@@ -11,6 +11,7 @@ export const LogoEmpty = ({ onClick }: LogoEmptyProps) => {
         height: "32px",
         backgroundColor: "#B3C4D6",
         borderRadius: "8px",
+        flexShrink: 0,
       }}
       onClick={onClick}
       className="logo-empty"

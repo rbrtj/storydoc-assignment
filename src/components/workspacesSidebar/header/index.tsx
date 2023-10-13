@@ -1,17 +1,18 @@
 import "./index.scss";
 import { Button } from "../../ui/button";
-import { Check, Logo, LogoEmpty, Plus } from "../../../assets/icons";
+import { Check, Plus } from "../../../assets/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { RootState } from "../../../store/store.ts";
-import { addWorkspace, setActiveWorkspace } from "../store/workspaces.slice.ts";
+import { addWorkspace } from "../store/workspaces.slice.ts";
 import { WorkspaceType } from "../types/workspaces.types.ts";
 import { v4 as uuidv4 } from "uuid";
+import { WorkspaceItem } from "../workspaceItem/WorkspaceItem.tsx";
+import { WorkspaceItemNew } from "../workspaceItem/WorkspaceItemNew.tsx";
 
 export const Header = () => {
   const [newBoardName, setNewBoardName] = useState("");
   const [showNewBoardItem, setShowNewBoardItem] = useState(false);
-
   const dispatch = useDispatch();
   const workspaces = useSelector(
     (state: RootState) => state.workspaces.allWorkspaces,
@@ -19,11 +20,12 @@ export const Header = () => {
 
   const handleCreateNewBoard = () => {
     setShowNewBoardItem(true);
-    // dispatch(setBoardActive({ index: null }));
   };
 
-  const handleCancelNewBoard = () => {
+  const handleCancelNewBoard = (e: any) => {
+    console.log(e);
     setShowNewBoardItem(false);
+    setNewBoardName("");
   };
 
   const handleAddNewBoard = () => {
@@ -38,40 +40,20 @@ export const Header = () => {
       }),
     );
     setShowNewBoardItem(false);
-  };
-
-  const handleSetActiveBoard = (id: string) => {
-    if (!showNewBoardItem) {
-      dispatch(setActiveWorkspace({ id }));
-    }
+    setNewBoardName("");
   };
 
   return (
     <div className="workspaces-header">
       {workspaces.map((workspace) => (
-        <div
-          key={workspace.id}
-          className={`workspaces-header__item ${
-            workspace.isActive ? "workspaces-header__item--active" : ""
-          }
-          ${!showNewBoardItem ? "cursor-pointer" : ""}
-          `}
-          onClick={() => handleSetActiveBoard(workspace.id)}
-        >
-          <Logo />
-          {workspace.title}
-        </div>
+        <WorkspaceItem workspace={workspace} disabled={showNewBoardItem} />
       ))}
       {showNewBoardItem && (
-        <div className="workspaces-header__item workspaces-header__item--new">
-          <LogoEmpty onClick={() => handleCancelNewBoard()} />
-          <input
-            value={newBoardName}
-            onChange={(e) => setNewBoardName(e.target.value)}
-            className="workspaces-header__item__input"
-            placeholder="Workspace name"
-          />
-        </div>
+        <WorkspaceItemNew
+          value={newBoardName}
+          setValue={setNewBoardName}
+          cancelNewItem={handleCancelNewBoard}
+        />
       )}
       {showNewBoardItem ? (
         <Button
